@@ -22,7 +22,8 @@ async function doBuild() {
         usage();
     }
     const config = require("import-cwd")("./package.json").swift || {};
-    await builder.build(mode, config);
+    await builder.build(mode, "arm64", config);
+    await builder.build(mode, "x86_64", config);
 }
 
 (async () => {

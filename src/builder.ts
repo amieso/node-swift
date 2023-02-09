@@ -11,6 +11,8 @@ const winHost = "node.exe";
 
 export type BuildMode = "release" | "debug";
 
+export type Architecture = "arm64" | "x86_64";
+
 export type ConfigFlags = string | string[];
 
 export interface Config {
@@ -65,7 +67,7 @@ function getFlags(config: Config, name: string) {
     }
 }
 
-export async function build(mode: BuildMode, config: Config = {}): Promise<string> {
+export async function build(mode: BuildMode, architecture: Architecture, config: Config = {}): Promise<string> {
     let spmFlags = getFlags(config, "spmFlags");
     let cFlags = getFlags(config, "cFlags");
     let swiftFlags = getFlags(config, "swiftFlags");
@@ -90,7 +92,7 @@ export async function build(mode: BuildMode, config: Config = {}): Promise<strin
         throw new Error("Invalid value for packagePath option.");
     }
 
-    const buildDir = config.buildPath || defaultBuildPath;
+    const buildDir = config.buildPath || path.join(defaultBuildPath, architecture);
 
     let product = config.product;
 
@@ -205,8 +207,9 @@ export async function build(mode: BuildMode, config: Config = {}): Promise<strin
         [
             "build",
             "-c", mode,
+            "--arch", architecture,
             "--product", "NodeSwiftHost",
-            "--build-path", buildDir,
+            "--scratch-path", buildDir,
             "--package-path", path.join(__dirname, "..", "NodeSwiftHost"),
             ...ldflags,
             ...spmFlags,

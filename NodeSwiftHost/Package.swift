@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.7.1
 
 import PackageDescription
 import Foundation
@@ -32,6 +32,7 @@ let package = Package(
             exclude: [
                 "vendored/node-gyp/LICENSE"
             ],
+            publicHeadersPath: ".",
             cSettings: [
                 .define("HOST_BINARY", to: "\"\(hostBinary)\"")
             ]

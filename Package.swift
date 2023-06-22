@@ -5,6 +5,7 @@ import Foundation
 
 let buildDynamic = ProcessInfo.processInfo.environment["NODE_SWIFT_BUILD_DYNAMIC"] == "1"
 let enableEvolution = ProcessInfo.processInfo.environment["NODE_SWIFT_ENABLE_EVOLUTION"] == "1"
+let targetMacVersion = ProcessInfo.processInfo.environment["NODE_SWIFT_TARGET_MAC_VERSION"]!
 
 let baseSwiftSettings: [SwiftSetting] = [
 //    .unsafeFlags(["-Xfrontend", "-warn-concurrency"])
@@ -12,6 +13,7 @@ let baseSwiftSettings: [SwiftSetting] = [
 
 let package = Package(
     name: "node-swift",
+    platforms: [.macOS(targetMacVersion)],
     products: [
         .library(
             name: "NodeAPI",
